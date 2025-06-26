@@ -1,31 +1,28 @@
-import { useEffect, useState } from "react";
-import { Container, Button, Alert, Modal } from "react-bootstrap";
-import Contador from "./components/Contador";
-import ScoreService from "./services/ScoreService";
-import MatchService from "./services/MatchService";
-
-interface User {
-  id?: number;
-  name?: string;
-  email?: string;
-}
+import React, { useState, useEffect } from "react";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Alert,
+  Spinner,
+  Modal,
+} from "react-bootstrap";
+import { User, Score, ActiveGame } from "../types";
+import { API_BASE_URL } from "../constants";
+import { getDuplaNames } from "../utils";
+import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
+import ScoreService from "../services/ScoreService";
+import MatchService from "../services/MatchService";
+import Contador from "../components/Contador";
 
 interface Match {
   id?: number;
   date?: string | Date;
   users?: User[];
   winnerName?: string;
-}
-
-interface Score {
-  id?: number;
-  match?: Match;
-  team1Score: number;
-  team2Score: number;
-  isActive: boolean;
-  winner?: string;
-  createdAt?: Date;
-  finishedAt?: Date;
 }
 
 export default function Placar() {
@@ -142,25 +139,6 @@ export default function Placar() {
   const getPlayerNames = (users?: User[]) => {
     if (!users || users.length === 0) return "Jogadores não definidos";
     return users.map((user) => user.name || user.email).join(", ");
-  };
-
-  const getDuplaNames = (users?: User[]) => {
-    if (!users || users.length < 4)
-      return { dupla1: "Dupla 1", dupla2: "Dupla 2" };
-
-    const dupla1 = users
-      .slice(0, 2)
-      .map((user) => user.name || user.email)
-      .join(" & ");
-    const dupla2 = users
-      .slice(2, 4)
-      .map((user) => user.name || user.email)
-      .join(" & ");
-
-    return {
-      dupla1: dupla1 || "Dupla 1",
-      dupla2: dupla2 || "Dupla 2",
-    };
   };
 
   return (
@@ -303,9 +281,13 @@ export default function Placar() {
                       <h6>Partida #{match.id}</h6>
                       <div className="mb-2">
                         <div className="d-flex justify-content-between">
-                          <span className="text-primary">🏆 {duplaNames.dupla1}</span>
+                          <span className="text-primary">
+                            🏆 {duplaNames.dupla1}
+                          </span>
                           <span className="text-muted">VS</span>
-                          <span className="text-success">🏆 {duplaNames.dupla2}</span>
+                          <span className="text-success">
+                            🏆 {duplaNames.dupla2}
+                          </span>
                         </div>
                       </div>
                       <small className="text-muted">

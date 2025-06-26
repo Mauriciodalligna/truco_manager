@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { appDataSource } from "../data-source";
 import ScoreRepository from "../repositories/scoreRepository";
 import { Score } from "../entities/score";
+import { Match } from "../entities/match";
 
 export class ScoreController {
   private scoreRepository: ScoreRepository;
@@ -16,7 +17,7 @@ export class ScoreController {
       const { matchId } = req.body;
 
       const score = new Score();
-      score.match = { id: matchId } as any;
+      score.match = { id: matchId } as Match;
       score.team1Score = 0;
       score.team2Score = 0;
       score.isActive = true;

@@ -1,14 +1,21 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Button,
   Container,
-  Form,
-  Modal,
+  Row,
+  Col,
+  Card,
+  Button,
   Table,
+  Modal,
+  Form,
   Alert,
   Spinner,
 } from "react-bootstrap";
-import UserInterface from "./interfaces/UserInterface";
+import { User, UserFormData } from "../types";
+import { API_BASE_URL } from "../constants";
+import { formatDate } from "../utils";
+import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 import {
   FaUserEdit,
   FaUserMinus,
@@ -20,12 +27,12 @@ import {
 const API_URL = "http://localhost:3002/api";
 
 const Usuarios = () => {
-  const [allUsers, setAllUsers] = useState<UserInterface[]>([]);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
   const [update, setUpdate] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [currentUser, setCurrentUser] = useState<UserInterface>({
+  const [currentUser, setCurrentUser] = useState<User>({
     id: 0,
     name: "",
     email: "",
@@ -60,12 +67,12 @@ const Usuarios = () => {
     setShowCreateModal(true);
   };
 
-  const handleEdit = (user: UserInterface) => {
+  const handleEdit = (user: User) => {
     setCurrentUser({ ...user, password: "" });
     setShowEditModal(true);
   };
 
-  const handleDelete = (user: UserInterface) => {
+  const handleDelete = (user: User) => {
     setCurrentUser(user);
     setShowDeleteModal(true);
   };
@@ -210,7 +217,7 @@ const Usuarios = () => {
                 </tr>
               </thead>
               <tbody>
-                {allUsers.map((user: UserInterface) => (
+                {allUsers.map((user: User) => (
                   <tr key={user.id} style={{ background: "#181c2a" }}>
                     <td
                       className="fw-medium"

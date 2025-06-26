@@ -1,36 +1,27 @@
-import { useEffect, useState } from "react";
-import { Container, Row, Col, Card, Button, Badge } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Badge,
+  Alert,
+  Spinner,
+} from "react-bootstrap";
 import Link from "next/link";
-import MatchService from "./services/MatchService";
-import ScoreService from "./services/ScoreService";
-
-interface User {
-  id?: number;
-  name?: string;
-  email?: string;
-}
-
-interface Match {
-  id?: number;
-  date?: string | Date;
-  users?: User[];
-  winnerName?: string;
-}
-
-interface DashboardStats {
-  totalUsers: number;
-  totalMatches: number;
-  activeMatches: number;
-  completedMatches: number;
-}
-
-interface ActiveGame {
-  id?: number;
-  match?: Match;
-  team1Score: number;
-  team2Score: number;
-  isActive: boolean;
-}
+import { User, Match, DashboardStats, ActiveGame } from "../types";
+import { API_BASE_URL } from "../constants";
+import {
+  formatDate,
+  getPlayerNames,
+  getDuplaNames,
+  getMatchStatus,
+} from "../utils";
+import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
+import MatchService from "../services/MatchService";
+import ScoreService from "../services/ScoreService";
 
 export default function Dashboard() {
   const [stats, setStats] = useState<DashboardStats>({
@@ -82,54 +73,6 @@ export default function Dashboard() {
       console.error("Erro ao carregar dados do dashboard:", error);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const getPlayerNames = (users?: User[]) => {
-    if (!users || users.length === 0) return "Jogadores não definidos";
-    return users.map((user) => user.name || user.email).join(", ");
-  };
-
-  const getDuplaNames = (users?: User[]) => {
-    if (!users || users.length < 4)
-      return { dupla1: "Dupla 1", dupla2: "Dupla 2" };
-
-    const dupla1 = users
-      .slice(0, 2)
-      .map((user) => user.name || user.email)
-      .join(" & ");
-    const dupla2 = users
-      .slice(2, 4)
-      .map((user) => user.name || user.email)
-      .join(" & ");
-
-    return {
-      dupla1: dupla1 || "Dupla 1",
-      dupla2: dupla2 || "Dupla 2",
-    };
-  };
-
-  const formatDate = (dateInput?: string | Date) => {
-    if (!dateInput) return "Data não informada";
-
-    try {
-      const date =
-        typeof dateInput === "string" ? new Date(dateInput) : dateInput;
-
-      if (isNaN(date.getTime())) {
-        return "Data inválida";
-      }
-
-      return date.toLocaleDateString("pt-BR", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    } catch (error) {
-      console.error("Erro ao formatar data:", error);
-      return "Data inválida";
     }
   };
 

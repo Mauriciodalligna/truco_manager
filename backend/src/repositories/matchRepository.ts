@@ -50,8 +50,19 @@ class MatchRepository implements MatchRepository {
   }
 
   async delete(id: number): Promise<boolean> {
-    const result = await this.repository.delete(id);
-    return result?.affected ? result.affected > 0 : false;
+    try {
+      // Primeiro, excluir placares associados à partida
+      await this.repository.query('DELETE FROM "score" WHERE "matchId" = $1', [
+        id,
+      ]);
+
+      // Depois, excluir a partida
+      const result = await this.repository.delete(id);
+      return result?.affected ? result.affected > 0 : false;
+    } catch (error) {
+      console.error("Erro ao excluir partida:", error);
+      return false;
+    }
   }
 
   async getActiveMatches(): Promise<Match[]> {

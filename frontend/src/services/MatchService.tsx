@@ -1,26 +1,8 @@
 import axios from "axios";
+import { Match, ApiMatch, MatchFormData } from "../types";
+import { API_BASE_URL } from "../constants";
 
 const url = "http://localhost:3002/api";
-
-interface User {
-  id?: number;
-  name?: string;
-  email?: string;
-}
-
-interface Match {
-  id?: number;
-  date?: Date;
-  users?: User[];
-  winnerName?: string;
-}
-
-interface ApiMatch {
-  id?: number;
-  date?: string | Date;
-  users?: number[];
-  winnerName?: string;
-}
 
 class MatchService {
   async createMatch(match: ApiMatch) {

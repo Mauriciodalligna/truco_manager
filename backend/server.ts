@@ -1,9 +1,13 @@
+import dotenv from "dotenv";
 import app from "./src/app";
 import { appDataSource } from "./src/data-source";
 
-const PORT = 3002;
+dotenv.config();
 
-appDataSource.initialize()
+const PORT = process.env.PORT || 3002;
+
+appDataSource
+  .initialize()
   .then(() => {
     console.log("Data Source has been initialized!");
     app.listen(PORT, () => {

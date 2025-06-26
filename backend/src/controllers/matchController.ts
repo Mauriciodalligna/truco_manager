@@ -8,9 +8,9 @@ import { Match } from "../entities/match";
 export class MatchController {
   private matchRepository: MatchRepository;
 
-  constructor() {
+    constructor() {
     this.matchRepository = new MatchRepository(appDataSource);
-  }
+    }
 
   create = async (req: Request, res: Response) => {
     const userRepo = new UserRepository(appDataSource);
@@ -27,17 +27,17 @@ export class MatchController {
     res.status(201).json(newMatch);
   };
 
-  getMatches = async (req: Request, res: Response) => {
+    getMatches = async (req: Request, res: Response) => {
     const matches = await this.matchRepository.getAll();
     res.status(200).json(matches);
   };
 
-  getCurrentMatches = async (req: Request, res: Response) => {
+    getCurrentMatches = async (req: Request, res: Response) => {
     const matches = await this.matchRepository.getCount();
     res.status(200).json({ message: matches });
   };
 
-  deleteMatch = async (req: Request, res: Response) => {
+    deleteMatch = async (req: Request, res: Response) => { 
     const id = req.params.id;
     const result = await this.matchRepository.delete(parseInt(id));
     if (!result) res.status(500).send("Deu erro!");
@@ -45,24 +45,24 @@ export class MatchController {
     res.status(204).send("Partida deletada");
   };
 
-  updateMatch = async (req: Request, res: Response) => {
+    updateMatch = async (req: Request, res: Response) => {
     const id = req.params.id;
     const winner = req.body.winner;
     const match = await this.matchRepository.getById(+id);
     if (!match) {
       res.status(404).json({ message: "Partida não encontrada" });
-    }
+        }
 
     match!.winnerName = winner;
     const matchUpdated = await this.matchRepository.updateMatch(+id, match!);
-    if (!matchUpdated) {
+        if (!matchUpdated) {
       res.status(500).json({ message: "Erro interno" });
-    }
+        }
     const resultado = this.matchRepository.save(matchUpdated!);
 
     if (!resultado) {
       res.status(500).json({ message: "Erro interno" });
-    }
+        }
 
     res.status(200).json({ message: "Partida alterada" });
   };

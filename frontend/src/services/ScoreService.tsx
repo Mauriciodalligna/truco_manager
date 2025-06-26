@@ -1,17 +1,8 @@
 import axios from "axios";
+import { Score, ActiveGame, ScoreFormData } from "../types";
+import { API_BASE_URL } from "../constants";
 
 const url = "http://localhost:3002/api";
-
-interface Score {
-  id?: number;
-  match?: any;
-  team1Score: number;
-  team2Score: number;
-  isActive: boolean;
-  winner?: string;
-  createdAt?: Date;
-  finishedAt?: Date;
-}
 
 interface CreateScoreRequest {
   matchId: number;

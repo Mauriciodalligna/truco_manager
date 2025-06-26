@@ -1,36 +1,11 @@
-import { useState, useEffect } from "react";
-import {
-  Container,
-  Table,
-  Button,
-  Badge,
-  Modal,
-  Form,
-  Row,
-  Col,
-  Alert,
-} from "react-bootstrap";
-import MatchService from "./services/MatchService";
-
-interface User {
-  id?: number;
-  name?: string;
-  email?: string;
-}
-
-interface Match {
-  id?: number;
-  date?: string | Date;
-  users?: User[];
-  winnerName?: string;
-}
-
-interface ApiMatch {
-  id?: number;
-  date?: string | Date;
-  users?: number[];
-  winnerName?: string;
-}
+import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Card, Button, Table, Modal, Form, Alert, Spinner, Badge } from 'react-bootstrap';
+import { User, Match, ApiMatch, MatchFormData } from '../types';
+import { API_BASE_URL } from '../constants';
+import { formatDate, getPlayerNames, getDuplaNames } from '../utils';
+import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
+import MatchService from '../services/MatchService';
 
 interface Dupla {
   jogador1: User;
@@ -449,8 +424,8 @@ export default function Partidas() {
                     color: "#fff !important",
                   }}
                 >
-                  <thead>
-                    <tr>
+        <thead>
+          <tr>
                       <th style={{ background: "#28304a", color: "#fff" }}>
                         #
                       </th>
@@ -469,9 +444,9 @@ export default function Partidas() {
                       <th style={{ background: "#28304a", color: "#fff" }}>
                         Ações
                       </th>
-                    </tr>
-                  </thead>
-                  <tbody>
+          </tr>
+        </thead>
+        <tbody>
                     {matches.map((match, index) => (
                       <tr
                         key={match.id || index}
@@ -556,10 +531,10 @@ export default function Partidas() {
                             </Button>
                           </div>
                         </td>
-                      </tr>
+          </tr>
                     ))}
-                  </tbody>
-                </Table>
+        </tbody>
+      </Table>
               </div>
             )}
           </div>
